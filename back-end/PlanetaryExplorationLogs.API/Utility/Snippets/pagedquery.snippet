@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+        <Header>
+            <Title>Paged Query Template</Title>
+            <Shortcut>pagedquery</Shortcut>
+            <Description>Code snippet for a paged query template</Description>
+            <Author>Eric Patton</Author>
+            <SnippetTypes>
+                <SnippetType>Expansion</SnippetType>
+            </SnippetTypes>
+        </Header>
+        <Snippet>
+            <Declarations>
+                <Literal>
+                    <ID>classname</ID>
+                    <ToolTip>Class name</ToolTip>
+                    <Default>ClassName</Default>
+                </Literal>
+                <Literal>
+                    <ID>returntype</ID>
+                    <ToolTip>Return type</ToolTip>
+                    <Default>ReturnType</Default>
+                </Literal>
+            </Declarations>
+            <Code Language="csharp">
+                <![CDATA[
+								//// Paste these using statements at the top of the file and uncomment them
+								//using PlanetaryExplorationLogs.API.Data.Context;
+								//using PlanetaryExplorationLogs.API.Utility.Patterns;
+								//using System.Net;
+								//using static PlanetaryExplorationLogs.API.Utility.Patterns.CommandQuery;
+				
+								public class $classname$_Query : RequestBase<PagedDataResult<$returntype$>>
+								{
+									private readonly BasicQueryFilters _filters;
+
+									public $classname$_Query(
+										PlanetExplorationDbContext context,
+										BasicQueryFilters filters
+									)
+										: base(context)
+									{
+										_filters = filters;
+									}
+
+									// The authorizer, validator, and handler run in that order. If any fail, the query will not be executed.
+
+									// The authorizer is optional and can be removed if not needed
+									public override IAuthorizer Authorizer =>
+										new $classname$_Authorizer(DbContext);
+
+									// The validator is optional and can be removed if not needed
+									public override IValidator Validator =>
+										new $classname$_Validator(DbContext, _filters);
+
+									// The handler is mandatory to have for every query
+									public override IHandler<PagedDataResult<$returntype$>> Handler =>
+										new $classname$_Handler(DbContext, _filters);
+								}
+
+								// The handler class is responsible for executing the query
+								public class $classname$_Handler : HandlerBase<PagedDataResult<$returntype$>>
+								{
+									private readonly BasicQueryFilters _filters;
+
+									public $classname$_Handler(PlanetExplorationDbContext context, BasicQueryFilters filters)
+										: base(context)
+									{
+										_filters = filters;
+									}
+
+									public override async Task<RequestResult<PagedDataResult<$returntype$>>> HandleAsync()
+									{
+										// Write your query here and make sure it is .AsQueryable()
+										var fruit = new List<string>
+										{
+											"Apple",
+											"Banana",
+											"Cherry",
+											"Date",
+											"Elderberry",
+											"Fig",
+											"Grape",
+											"Honeydew"
+										};
+										var fruitQuery = fruit.AsQueryable();
+
+										// Pass in your query, page size, and page number
+										var pagedData = await GetPagedDataAsync(
+											fruitQuery,
+											_filters.PageSize,
+											_filters.PageNumber
+										);
+
+										// Return the paged data
+										var result = new RequestResult<PagedDataResult<$returntype$>> { Data = pagedData };
+
+										return result;
+									}
+								}
+
+								// The authorizer class is responsible for any additional authorization logic
+								public class $classname$_Authorizer : AuthorizerBase
+								{
+									public $classname$_Authorizer(PlanetExplorationDbContext context)
+										: base(context)
+									{
+									}
+
+									public override async Task<RequestResult> AuthorizeAsync()
+									{
+										// Obviously, this is dummy authorization logic. Replace it with your own.
+										// Return AuthorizedResultAsync() if the operation is authorized, UnauthorizedResultAsync() otherwise.
+										return await AuthorizedResultAsync();
+									}
+								}
+
+								// The validator class is responsible for validating things before the query is executed
+								public class $classname$_Validator : ValidatorBase
+								{
+									private readonly BasicQueryFilters _filters;
+
+									public $classname$_Validator(PlanetExplorationDbContext context, BasicQueryFilters filters)
+										: base(context)
+									{
+										_filters = filters;
+									}
+
+									public async override Task<RequestResult> ValidateAsync()
+									{
+										// Obviously, this is dummy validation logic. Replace it with your own.
+										await Task.CompletedTask;
+
+										if (_filters.PageNumber < 1)
+										{
+											return await InvalidResultAsync(
+												HttpStatusCode.BadRequest,
+												"Current page must be greater than zero.");
+										}
+
+										if (_filters.PageSize < 1)
+										{
+											return await InvalidResultAsync(
+												HttpStatusCode.BadRequest,
+												"Number of items per page must be greater than zero.");
+										}
+
+										// You can also check things in the database, if needed, such as checking if a record exists
+										return await ValidResultAsync();
+									}
+								}
+                ]]>
+            </Code>
+        </Snippet>
+    </CodeSnippet>
+</CodeSnippets>

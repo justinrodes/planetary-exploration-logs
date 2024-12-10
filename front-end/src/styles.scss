@@ -1,0 +1,97 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+
+html {
+  color-scheme: light dark;
+  @include mat.theme((
+    color: mat.$azure-palette,
+    typography: Roboto,
+    density: 0
+  ));
+}
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+}
+
+// Progress spinner styles
+mat-spinner {
+  margin: 5rem auto;
+}
+
+// Snackbar styles
+.error-notification {
+  @include mat.snack-bar-overrides((
+    container-color: var(--mat-sys-error-container),
+    supporting-text-color: var(--mat-sys-on-error-container),
+    button-color: var(--mat-sys-error)
+  ));
+}
+
+// Expansion panel styles
+.panel {
+  background-color: var(--mat-sys-surface-container-high);
+
+  p {
+    font-size: 95%;
+    margin-inline-start: 1.5rem;
+  }
+
+  a {
+    float: right;
+    margin-top: 0.5rem;
+  }
+}
+.panel-header {
+  background-color: var(--mat-sys-surface-container);
+}
+
+// Dialog styles
+mat-dialog-actions {
+  & > button:last-child {
+    margin-left: 1rem !important;
+  }
+
+  .spacer {
+    flex-grow: 1;
+  }
+
+  .delete-button {
+    @include mat.button-overrides((
+      outlined-outline-color: var(--mat-sys-error),
+      outlined-label-text-color: var(--mat-sys-error),
+    ));
+  }
+}
+
+// Form styles
+mat-form-field {
+  display: block;
+  width: 25rem;
+  margin-bottom: 1rem;
+}
+
+// "Add" button styles
+.top-button-container {
+  padding: 1rem;
+
+  a {
+    @include mat.button-overrides((
+      outlined-label-text-color: #4cbb51
+    ));
+  }
+}
+
+// Empty list styles
+.empty-message {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}

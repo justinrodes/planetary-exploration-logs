@@ -1,0 +1,31 @@
+@if (apiGet?.loading()) {
+<mat-spinner diameter="25"></mat-spinner>
+}
+@else if (!apiGet?.hasError()) {
+<mat-card appearance="outlined">
+  <mat-card-content>
+    <div class="add-discovery-wrapper">
+      <button type="button" (click)="openDialog()" mat-icon-button matTooltip="Add discovery">
+        <mat-icon fontIcon="add" color="accent" class="material-symbols" aria-hidden="false"
+          aria-label="Add icon"></mat-icon>
+      </button>
+    </div>
+    @if (apiGet?.data()?.length) {
+    <table mat-table [dataSource]="apiGet?.data() ?? []">
+      <mat-text-column name="name"></mat-text-column>
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Type</th>
+        <td mat-cell *matCellDef="let discovery"> {{discovery.discoveryType?.name}} </td>
+      </ng-container>
+      <mat-text-column name="location"></mat-text-column>
+      <mat-text-column name="description"></mat-text-column>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row (click)="openDialog(row)" *matRowDef="let row; columns: columnsToDisplay"></tr>
+    </table>
+    }
+    @else {
+    <p class="empty-message">There are no discovery records for this mission. Please add a discovery.</p>
+    }
+  </mat-card-content>
+</mat-card>
+}

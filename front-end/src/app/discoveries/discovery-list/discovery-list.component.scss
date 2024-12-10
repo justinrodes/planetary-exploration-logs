@@ -1,0 +1,18 @@
+mat-spinner {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mat-mdc-card-content:first-child {
+  padding-top: 0.5rem;
+}
+
+.add-discovery-wrapper {
+  float: right;
+  height: 0; // https://stackoverflow.com/a/24814532
+}
+
+.mat-mdc-row:hover {
+  cursor: pointer;
+  box-shadow: 0 0 3px 3px dimgrey;
+}

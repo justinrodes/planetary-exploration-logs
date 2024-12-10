@@ -1,0 +1,10 @@
+<mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)" class="panel">
+  <mat-expansion-panel-header class="panel-header">
+    <mat-panel-title>{{ planet().name }}</mat-panel-title>
+  </mat-expansion-panel-header>
+  <a [routerLink]="[editPath, planet().id]" mat-stroked-button>Edit</a>
+  <p><strong>Type:</strong> {{ planet().type }}</p>
+  <p><strong>Climate:</strong> {{ planet().climate }}</p>
+  <p><strong>Terrain:</strong> {{ planet().terrain }}</p>
+  <p><strong>Population:</strong> {{ planet().population }}</p>
+</mat-expansion-panel>

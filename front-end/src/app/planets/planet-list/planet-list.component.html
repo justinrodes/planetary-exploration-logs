@@ -1,0 +1,15 @@
+@if (apiGet.loading()) {
+<mat-spinner></mat-spinner>
+}
+@else if (!apiGet.hasError()) {
+<div class="top-button-container">
+  <a [routerLink]="addPath" mat-stroked-button>Add Planet</a>
+</div>
+@for (planet of apiGet.data(); track planet.id) {
+<app-planet-panel [planet]="planet"></app-planet-panel>
+}
+@empty {
+<p class="empty-message">There are no planet records. Please add a planet.</p>
+}
+}
+<router-outlet />

@@ -1,0 +1,15 @@
+@if (apiGet.loading()) {
+<mat-spinner></mat-spinner>
+}
+@else if (!apiGet.hasError()) {
+<div class="top-button-container">
+  <a [routerLink]="addPath" mat-stroked-button>Add Mission</a>
+</div>
+@for (mission of apiGet.data(); track mission.id) {
+<app-mission-panel [mission]="mission"></app-mission-panel>
+}
+@empty {
+<p class="empty-message">There are no mission records. Please add a mission.</p>
+}
+}
+<router-outlet />

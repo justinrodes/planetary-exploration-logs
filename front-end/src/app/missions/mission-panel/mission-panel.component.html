@@ -1,0 +1,13 @@
+<mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)" class="panel">
+  <mat-expansion-panel-header class="panel-header">
+    <mat-panel-title>{{ mission().name }}</mat-panel-title>
+  </mat-expansion-panel-header>
+  <a [routerLink]="[editPath, mission().id]" mat-stroked-button>Edit</a>
+  <p><strong>Date:</strong> {{ formatDate(mission().date) }}</p>
+  <p><strong>Planet:</strong> {{ mission().planet?.name }}</p>
+  <p><strong>Description:</strong> {{ mission().description }}</p>
+  <p><strong>Discoveries:</strong></p>
+  @if (panelOpenState()) {
+  <app-discovery-list [missionId]="mission().id"></app-discovery-list>
+  }
+</mat-expansion-panel>

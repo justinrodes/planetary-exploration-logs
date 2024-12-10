@@ -1,0 +1,51 @@
+@if (busy) {
+<mat-spinner></mat-spinner>
+}
+@else {
+<h2 mat-dialog-title>
+  @if (data.discovery) {
+  Edit {{ data.discovery.name }}
+  }
+  @else {
+  New Discovery
+  }
+</h2>
+<form [formGroup]="discoveryForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input type="text" formControlName="name" required maxlength="150" matInput>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Type</mat-label>
+      <mat-select formControlName="discoveryTypeId">
+        @for (discoveryType of discoveryTypes(); track discoveryType.id) {
+        <mat-option [value]="discoveryType.id">{{ discoveryType.name }}</mat-option>
+        }
+        @empty {
+        <mat-option [value]="0">Please add a discovery type</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Location</mat-label>
+      <input type="text" formControlName="location" maxlength="200" matInput>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea formControlName="description" rows="4" maxlength="500" matInput></textarea>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    @if (data.discovery) {
+    <button type="button" class="delete-button" mat-stroked-button (click)="onDelete()">Delete</button>
+    <div class="spacer"></div>
+    }
+    <button type="button" mat-stroked-button mat-dialog-close>Cancel</button>
+    <button type="submit" mat-flat-button [disabled]="!discoveryForm.valid">Save</button>
+  </mat-dialog-actions>
+</form>
+}

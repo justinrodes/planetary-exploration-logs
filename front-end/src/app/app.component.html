@@ -1,0 +1,21 @@
+<header>
+  <mat-toolbar>
+    <span>Planetary Exploration Logs</span>
+  </mat-toolbar>
+</header>
+
+<main>
+  <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+    @for (tab of tabs; track tab) {
+    <a mat-tab-link [routerLink]="tab.route" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive"
+      class="nav-tab" attr.aria-label="{{tab.label}} tab">
+      <mat-icon fontIcon="{{ tab.icon }}" class="material-symbols-outlined tab-icon" aria-hidden="false"
+        attr.aria-label="{{ tab.label }} icon"></mat-icon>
+      {{tab.label}}
+    </a>
+    }
+  </nav>
+  <mat-tab-nav-panel #tabPanel>
+    <router-outlet />
+  </mat-tab-nav-panel>
+</main>

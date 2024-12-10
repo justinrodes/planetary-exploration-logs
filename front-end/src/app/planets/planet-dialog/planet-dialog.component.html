@@ -1,0 +1,51 @@
+<ng-template #dialogTemplate>
+  @if (busy) {
+  <mat-spinner></mat-spinner>
+  }
+  @else if (!apiGet?.hasError()) {
+  <h2 mat-dialog-title>
+    @if (apiGet) {
+    Edit {{ apiGet.data()?.name }}
+    }
+    @else {
+    New Planet
+    }
+  </h2>
+  <form [formGroup]="planetForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input type="text" formControlName="name" required maxlength="100" matInput>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Type</mat-label>
+        <input type="text" formControlName="type" required maxlength="50" matInput>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Climate</mat-label>
+        <input type="text" formControlName="climate" maxlength="200" matInput>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Terrain</mat-label>
+        <input type="text" formControlName="terrain" maxlength="200" matInput>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Population</mat-label>
+        <input type="text" formControlName="population" maxlength="100" matInput>
+      </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      @if (apiGet) {
+      <button type="button" class="delete-button" mat-stroked-button (click)="onDelete()">Delete</button>
+      <div class="spacer"></div>
+      }
+      <button type="button" mat-stroked-button mat-dialog-close>Cancel</button>
+      <button type="submit" mat-flat-button [disabled]="!planetForm.valid">Save</button>
+    </mat-dialog-actions>
+  </form>
+  }
+</ng-template>

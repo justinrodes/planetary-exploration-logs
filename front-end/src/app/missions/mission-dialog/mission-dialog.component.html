@@ -1,0 +1,56 @@
+<ng-template #dialogTemplate>
+  @if (busy) {
+  <mat-spinner></mat-spinner>
+  }
+  @else if (!apiGet?.hasError()) {
+  <h2 mat-dialog-title>
+    @if (apiGet) {
+    Edit {{ apiGet.data()?.name }}
+    }
+    @else {
+    New Mission
+    }
+  </h2>
+  <form [formGroup]="missionForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input type="text" formControlName="name" required maxlength="150" matInput>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Date</mat-label>
+        <input type="text" formControlName="date" required maxlength="10" matInput [matDatepicker]="picker">
+        <mat-hint>mm/dd/yyyy</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Planet</mat-label>
+        <mat-select formControlName="planetId">
+          @for (planet of planets(); track planet.id) {
+          <mat-option [value]="planet.id">{{ planet.name }}</mat-option>
+          }
+          @empty {
+          <mat-option [value]="0">Please add a planet</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Description</mat-label>
+        <textarea formControlName="description" rows="4" maxlength="500" matInput></textarea>
+      </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      @if (apiGet) {
+      <button type="button" class="delete-button" mat-stroked-button (click)="onDelete()">Delete</button>
+      <div class="spacer"></div>
+      }
+      <button type="button" mat-stroked-button mat-dialog-close>Cancel</button>
+      <button type="submit" mat-flat-button [disabled]="!missionForm.valid">Save</button>
+    </mat-dialog-actions>
+  </form>
+  }
+</ng-template>

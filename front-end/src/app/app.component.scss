@@ -1,0 +1,23 @@
+@use '@angular/material' as mat;
+
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
+header {
+  @include mat.toolbar-overrides((
+    title-text-size: 3rem,
+    title-text-font: 'Iceland, monospace'
+  ));
+}
+
+.nav-tab {
+  font-size: larger;
+}
+
+.tab-icon {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+main {
+  margin: 0 1rem 1rem;
+  min-height: 15rem;
+}
